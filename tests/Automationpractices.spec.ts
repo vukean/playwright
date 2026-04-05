@@ -169,5 +169,11 @@ test('Radio button  ', async({page})=>{
 test('Drag something  ',  async({page})=>{
   await page.goto('https://practice.expandtesting.com/drag-and-drop')
   const boxA = page.locator('#column-a');
-  const boxB = page.locator('#column-b'); 
-}
+  const boxB = page.locator('#column-b');
+  // Drag box A to box B
+  await boxA.dragTo(boxB);
+  // Verify that box A is now in the position of box B
+  await expect(boxA).toHaveText('B');
+  await expect(boxB).toHaveText('A');  
+
+})
