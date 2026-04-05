@@ -13,7 +13,7 @@ import { test, expect, request } from '@playwright/test'
 //     await page.getByRole('link',{name:"Playwright Master Class: From Zero To Hero"}).first().click();
 
 // })
-
+aa
 test('mouse', async ({page}) =>{
 
     await page.goto('https://material.playwrightvn.com/018-mouse.html');
@@ -160,11 +160,3 @@ await searchBox.press('Enter');
 
 )
 
-test ('tao thich the', async({page})=> {
-    await page.goto('https://www.facebook.com/groups/1523459548029885');
-    
-  await expect(
-    page.getByText('You must log in to continue.').first()
-  ).toBeVisible();
-
-})
