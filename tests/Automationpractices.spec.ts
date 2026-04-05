@@ -164,3 +164,10 @@ test('Radio button  ', async({page})=>{
     await page.waitForTimeout(200);
 
 })
+
+
+test('Drag something  ',  async({page})=>{
+  await page.goto('https://practice.expandtesting.com/drag-and-drop')
+  const boxA = page.locator('#column-a');
+  const boxB = page.locator('#column-b'); 
+}
