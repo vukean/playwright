@@ -45,16 +45,35 @@ test('Test input Field', async ({ page }) => {
   await dateInput.fill('2025-04-10');
   await expect(dateInput).toHaveValue('2025-04-10');
 });
-test('Login page',async({page})=>{
+test('Login page Successful Login tc1',async({page})=>{
   await page.goto('https://practice.expandtesting.com/login');
   const userName = page.getByRole('textbox', { name: 'Username' })
   const passWord = page.getByRole('textbox', { name: 'Password' })
+  const btnLogin = page.getByRole('button', { name: 'Login' })
+  const btnLogout = page.getByRole('link', { name: 'Logout' })
+  //Input userName
   await userName.fill('practice')
   await expect(userName).toHaveValue('practice')
+    //Input passWord
+
   await passWord.fill('SuperSecretPassword!')
   await expect(passWord).toHaveValue('SuperSecretPassword!')
-  const btnLogin = page.getByRole('button', { name: 'Login' })
+      await page.waitForTimeout(200);
+
   await btnLogin.click();
-  expect 
-  
+  //Verify that the user is redirected to the /secure page.
+  await expect(page).toHaveURL('https://practice.expandtesting.com/secure')
+  await expect(page.getByText('You logged into a secure area!')).toBeVisible();
+      await page.waitForTimeout(200);
+
+      //Verify that a Logout button is displayed.
+      await expect(btnLogout).toBeVisible();
+  await btnLogout.click();
+  await expect(page).toHaveURL('https://practice.expandtesting.com/login')
+  await expect(page.getByText('You logged out of the secure')).toBeVisible();
 });
+test('Login page Invalid userName',async({page})=>{
+  await page.goto("https://practice.expandtesting.com/login")
+
+  
+})
