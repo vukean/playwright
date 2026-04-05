@@ -74,6 +74,33 @@ test('Login page Successful Login tc1',async({page})=>{
 });
 test('Login page Invalid userName',async({page})=>{
   await page.goto("https://practice.expandtesting.com/login")
+  const userName = page.getByRole('textbox', { name: 'Username' })
+  const passWord = page.getByRole('textbox', { name: 'Password' })
+  const btnLogin = page.getByRole('button', { name: 'Login' })
+  const btnLogout = page.getByRole('link', { name: 'Logout' })
+    //Input passWord
+  await passWord.fill('SuperSecretPassword!')
+  await expect(passWord).toHaveValue('SuperSecretPassword!')
+      await page.waitForTimeout(200);
+  await btnLogin.click();
+  //Verify that an error message "Invalid username." is displayed.
+  await expect(page.getByText('Your username is invalid!')).toBeVisible();
+})
 
-  
+test('Login page Invalid passWord',async({page})=>{
+  await page.goto("https://practice.expandtesting.com/login")
+  const userName = page.getByRole('textbox', { name: 'Username' })
+  const passWord = page.getByRole('textbox', { name: 'Password' })
+  const btnLogin = page.getByRole('button', { name: 'Login' })
+  const btnLogout = page.getByRole('link', { name: 'Logout' })
+  //Input userName
+  await userName.fill('hehehe')
+  await expect(userName).toHaveValue('hehehe')
+    //Input passWord
+  await passWord.fill('SuperSecretPassword!')
+  await expect(passWord).toHaveValue('SuperSecretPassword!')
+      await page.waitForTimeout(200);
+  await btnLogin.click();
+  //Verify that an error message "Invalid username." is displayed.
+  await expect(page.getByText('Your password is invalid!')).toBeVisible();
 })
