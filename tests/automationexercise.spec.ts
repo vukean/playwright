@@ -177,3 +177,29 @@ test('Test case 5: Register New User with existing email',async({page})=>{
         await page.getByRole('button', { name: 'Signup' }).click();
         await expect(page.getByText('Email Address already exist!', {exact: true})).toBeVisible();
     })
+test('Test case 6: Contact Us Form',async({page})=>{
+    const name = 'vukean'
+    const email = 'anvuke2001@gmail.com'
+    await page.goto("https://automationexercise.com/" )
+    await page.getByRole('link', { name: ' Contact us' }).click();
+    await expect(page).toHaveURL('https://automationexercise.com/contact_us', { exact: true });
+    await expect(page.getByRole('heading', { name: 'Get In Touch' })).toBeVisible();
+    await page.getByRole('textbox', { name: 'Name' }).fill(name);
+    await expect(page.getByRole('textbox', { name: 'Name' })).toHaveValue(name);
+    await page.getByRole('textbox', { name: 'Email', exact: true }).fill(email);
+    await expect(page.getByRole('textbox', { name: 'Email', exact: true })).toHaveValue(email);
+    await page.getByRole('textbox', { name: 'Subject' }).fill('Test Contact Us Form');
+    await expect(page.getByRole('textbox', { name: 'Subject' })).toHaveValue('Test Contact Us Form');
+    await page.getByRole('textbox', { name: 'Your Message Here' }).fill('This is a test message for the Contact Us form.', { exact: true });
+    await expect(page.getByRole('textbox', { name: 'Your Message Here' })).toHaveValue('This is a test message for the Contact Us form.', { exact: true });
+    await page.getByRole('button', { name: 'Choose File' }).setInputFiles('D:/Project/Practice-Automation-Testing/d45f3f2e80ec85d75fc934294dd1d836.jpg');
+    await expect(page.getByRole('button', { name: 'Choose File' })).toHaveValue('C:\\fakepath\\d45f3f2e80ec85d75fc934294dd1d836.jpg');
+
+        await page.waitForTimeout(3000);
+  page.on('dialog', async dialog => {
+    expect(dialog.type()).toBe('confirm');
+    expect(dialog.message()).toBe('Press OK to proceed', { exact: true });
+    await dialog.accept();
+  });
+    await page.getByRole('button', { name: 'Submit' }).click();
+})
