@@ -233,10 +233,23 @@ test('Test case 8: Verify All Products and product detail page',async({page})=>{
     await expect(productInfo.locator('p').filter({ hasText: 'Brand:' })).toContainText(/Brand:\s*.+/);
 })
 test('Test case 9: Search product',async({page})=>{
-    await page.goto("https://automationexercise.com/")
-    // await page.locator('ul.navbar-nav').locator('a[href="/products"]').click();
-    await page.getByRole('link', { name: ' Products' }).click();
-    await expect(page).toHaveURL('https://automationexercise.com/products');
-    await page.getByRole('textbox', { name: 'Search Product' }).fill('Blue Top');
-    await page.getByRole('button', { name: 'Search' }).click();
+  const keyword = 'men';
+
+  await page.goto('https://automationexercise.com/');
+  await page.getByRole('link', { name: ' Products' }).click();
+  await expect(page).toHaveURL('https://automationexercise.com/products');
+
+  await page.getByRole('textbox', { name: 'Search Product' }).fill(keyword);
+  await page.locator('#submit_search').click();
+
+  await expect(page.getByText('Searched Products')).toBeVisible();
+
+  const productNames = page.locator('.productinfo.text-center p');
+  const count = await productNames.count();
+  // Verify that each product name contains the search keyword
+  for (let i = 0; i < count; i++) {
+    const name = await productNames.nth(i).textContent();
+    console.log(`Product ${i + 1}: ${name}`);
+    expect(name?.toLowerCase()).toContain(keyword.toLowerCase());
+  }
 })
