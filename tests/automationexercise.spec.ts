@@ -1,6 +1,12 @@
 import { test, expect } from '@playwright/test';
 import { faker } from '@faker-js/faker';
 
+
+//This is a note: Correct account was create but cannot delete account
+// anvuke2001@gmail.com
+// password: 123
+//
+
 test('Test case 1: Register New User', async ({ page }) => {
         const username = `${faker.person.firstName().toLowerCase()}${faker.number.int({ min: 100, max: 999 })}`;
         const email = faker.internet.email();
@@ -132,5 +138,37 @@ test('Test case 2: Login User with correct email and password', async ({ page })
         await page.getByRole('textbox', { name: 'Password' }).fill(password);
         await page.getByRole('button', { name: 'Login' }).click();
         await expect(page.getByText('Logged in as ' + username)).toBeVisible();
+
+})
+test('Test ca 3: Login user with incorrect email and password',async({page})=>{
+    const inValidusername = `${faker.internet.email().toLowerCase()}${faker.number.int({ min: 100, max: 999 })}`;
+    const inValidpassword = 'InvalidPassword123';
+    await page.goto("https://automationexercise.com/");
+    await page.getByRole('link', { name: ' Signup / Login' }).click();
+    await expect(page.getByRole('heading', { name: 'Login to your account' })).toBeVisible();
+    await page.locator('form').filter({ hasText: 'Login' }).getByPlaceholder('Email Address').fill(inValidusername);
+    await page.getByRole('textbox', { name: 'Password' }).fill(inValidpassword);
+    await page.getByRole('button', { name: 'Login' }).click();
+    await expect(page.getByText('Your email or password is incorrect!')).toBeVisible();
+})
+test('Test case 4: Logout User',async({page})=>{
+    const name= 'vukean'
+    const username = 'anvuke2001@gmail.com'
+    const password = '123'
+    await page.goto("https://www.automationexercise.com/") 
+    await page.getByRole('link', { name: ' Signup / Login' }).click();
+    await expect(page.getByRole('link', { name: 'Website for automation' })).toBeVisible();
+    await page.locator('form').filter({ hasText: 'Login' }).getByPlaceholder('Email Address').fill(username);
+    await page.getByRole('textbox', { name: 'Password' }).fill(password);
+    await page.getByRole('button', { name: 'Login' }).click();
+    await expect(page.getByText('Logged in as ' + name)).toBeVisible();
+    await page.getByRole('link', { name: ' Logout' }).click();
+    await expect(page).toHaveURL('https://www.automationexercise.com/login')
+})
+test('Test case 5: Register New User with existing email',async({page})=>{
+    const username = 'anvuke2001@gmail.com'
+    const password = '123'
+        await page.goto("https://www.automationexercise.com/") 
+        await page.getByRole('link', { name: ' Signup / Login' }).click();
 
 })
