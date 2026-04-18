@@ -166,9 +166,14 @@ test('Test case 4: Logout User',async({page})=>{
     await expect(page).toHaveURL('https://www.automationexercise.com/login')
 })
 test('Test case 5: Register New User with existing email',async({page})=>{
+    const name = 'vukean'
     const username = 'anvuke2001@gmail.com'
     const password = '123'
         await page.goto("https://www.automationexercise.com/") 
         await page.getByRole('link', { name: ' Signup / Login' }).click();
-
-})
+        await expect(page.getByRole('heading', { name: 'New User Signup!' })).toBeVisible();
+        await page.getByRole('textbox', { name: 'Name' }).fill(name);
+        await page.locator('form').filter({ hasText: 'Signup' }).getByPlaceholder('Email Address').fill(username);
+        await page.getByRole('button', { name: 'Signup' }).click();
+        await expect(page.getByText('Email Address already exist!', {exact: true})).toBeVisible();
+    })
