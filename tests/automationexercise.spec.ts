@@ -235,5 +235,10 @@ test('Test case 8: Verify All Products and product detail page',async({page})=>{
 })
 test('Test case 9: Search product',async({page})=>{
     await page.goto("https://automationexercise.com/")
+    // await page.locator('ul.navbar-nav').locator('a[href="/products"]').click();
+    await page.getByRole('link', { name: ' Products' }).click();
+    await expect(page).toHaveURL('https://automationexercise.com/products');
+    await page.getByRole('textbox', { name: 'Search Product' }).fill('Blue Top');
+    await page.getByRole('button', { name: 'Search' }).click();
     
 })
