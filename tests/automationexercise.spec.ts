@@ -114,7 +114,6 @@ test('Test case 2: Login User with correct email and password', async ({ page })
         await page.getByLabel('Country *').selectOption('United States');
         await expect(page.getByLabel('Country *')).toHaveValue('United States');
         await page.getByRole('textbox', { name: 'State *' }).fill(state);
-
         await expect(page.getByRole('textbox', { name: 'State *' })).toHaveValue(state);
         await page.getByRole('textbox', { name: 'City *' }).fill(city);
         await expect(page.getByRole('textbox', { name: 'City *' })).toHaveValue(city);
@@ -132,5 +131,4 @@ test('Test case 2: Login User with correct email and password', async ({ page })
         await page.getByRole('textbox', { name: 'Password' }).fill(password);
         await page.getByRole('button', { name: 'Login' }).click();
         await expect(page.getByText('Logged in as ' + username)).toBeVisible();
-
 })
