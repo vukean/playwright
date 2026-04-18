@@ -198,8 +198,11 @@ test('Test case 6: Contact Us Form',async({page})=>{
         await page.waitForTimeout(3000);
   page.on('dialog', async dialog => {
     expect(dialog.type()).toBe('confirm');
-    expect(dialog.message()).toBe('Press OK to proceed', { exact: true });
+    expect(dialog.message()).toBe('Press OK to proceed!', { exact: true });
     await dialog.accept();
   });
     await page.getByRole('button', { name: 'Submit' }).click();
+    await expect(page.locator('#contact-page').getByText('Success! Your details have been submitted successfully.', { exact: true })).toBeVisible();
+    await page.getByRole('link', { name: ' Home' }).click();
+    await expect(page).toHaveURL('https://automationexercise.com/')
 })
