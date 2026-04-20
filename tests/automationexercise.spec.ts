@@ -253,3 +253,10 @@ test('Test case 9: Search product',async({page})=>{
     expect(name?.toLowerCase()).toContain(keyword.toLowerCase());
   }
 })
+test('Test case 10: Verify Subscription in home page',async({page})=>{
+    const footer = page.locator('footer');
+    await expect(footer).toBeVisible();
+
+    await page.goto('https://automationexercise.com/');
+    
+})
