@@ -255,8 +255,11 @@ test('Test case 9: Search product',async({page})=>{
 })
 test('Test case 10: Verify Subscription in home page',async({page})=>{
     const footer = page.locator('footer');
-    await expect(footer).toBeVisible();
 
     await page.goto('https://automationexercise.com/');
-    
+    await footer.scrollIntoViewIfNeeded();
+    await expect(footer).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Subscription' })).toBeVisible();
+    await page.getByRole('textbox', { name: 'Your email address' }).fill('anvuke2001@gmail.com');
+    await page.locator('#subscribe').click();
 })
