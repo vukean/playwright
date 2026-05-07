@@ -1,7 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { faker } from '@faker-js/faker';
 
-
 //This is a note: Correct account was create but cannot delete account
 // anvuke2001@gmail.com
 // password: 123
@@ -235,8 +234,8 @@ test('Test case 8: Verify All Products and product detail page',async({page})=>{
 test('Test case 9: Search product',async({page})=>{
   const keyword = 'men';
 
-  await page.goto('https://automationexercise.com/');
   await page.getByRole('link', { name: ' Products' }).click();
+  await page.goto('https://automationexercise.com/');
   await expect(page).toHaveURL('https://automationexercise.com/products');
 
   await page.getByRole('textbox', { name: 'Search Product' }).fill(keyword);
@@ -291,17 +290,45 @@ test('Test case 12: add product to cart and verify in cart page',async({page})=>
     await page.getByRole('button', { name: 'Continue Shopping' }).click();
     //click vao cart va verify san pham da duoc them vao cart
     await page.getByRole('link', { name: ' Cart' }).click();
-    //Khai bao ten san pham de verify, o day minh se lay ten san pham tu trang product va so sanh voi ten san pham trong cart
-    const productNames = page.locator('.cart_info_table .cart_description a');
-    const firstProductName = (await productNames.nth(0).textContent())?.trim();
-    const secondProductName = (await productNames.nth(1).textContent())?.trim();
-    const firstProductInCart = page.locator('#product-1 .cart_description a');
-    const secondProductInCart = page.locator('#product-2 .cart_description a');
+    // //Khai bao ten san pham de verify, o day minh se lay ten san pham tu trang product va so sanh voi ten san pham trong cart
+    await expect(page.locator('#product-1 .cart_description a')).toBeVisible();
+    await expect(page.locator('#product-2 .cart_description a')).toBeVisible();
+})
+test('Test case 13: Verify product quantity in cart page',async({page})=>{
+    const firstProduct = page.locator('.product-image-wrapper').first();
+    await page.goto('https://automationexercise.com/');
+    await page.getByRole('link', { name: ' View Product' }).first().click();
+    await expect(page.locator('.product-information')).toBeVisible();
+    await page.locator('#quantity').fill('4');
+    await page.getByRole('button', { name: ' Add to cart' }).click();
+    await page.getByRole('button', { name: 'Continue Shopping' }).click();
+    await page.getByRole('link', { name: ' Cart' }).click();
+    const quantityInput = page.locator('#product-1 .cart_quantity button');
+    //expect to have value = 4 
+    // await expect(page.getByRole('button', { name: '3' })).toBeVisible(); - cách này cũng được nhưng nó sẽ bị lỗi nếu số lượng sản phẩm thay đổi, nên mình sẽ dùng cách lấy giá trị của Button để verify
+    await expect(quantityInput).toHaveText('4');
 
-    await expect(firstProductInCart).toHaveText(firstProductName ?? '');
-    await expect(secondProductInCart).toHaveText(secondProductName ?? '');
-
-
+})
+test('Test case 14: Place Order: Register while Checkout',async({page})=>{
+    await page.goto('https://automationexercise.com/');
+    const firstProduct = page.locator('.product-image-wrapper').first();
+    await page.getByRole('link', { name: ' Products' }).click();
+    //Ham hover vao san pham dau tien va click vao add to cart
+    await firstProduct.hover();
+    //khoi' overlay-content a lay the A la nut click
+    await firstProduct.locator('.overlay-content a').click();
+    await page.getByRole('button', { name: 'Continue Shopping' }).click();
+    await page.getByRole('link', { name: ' Cart' }).click();
+    await page.getByText('Proceed To Checkout').click();
+    await page.getByRole('link', { name: 'Register / Login' }).click();
+    const username = 'anvuke2001@gmail.com'
+    const password = '123'
+    await page.locator('form').filter({ hasText: 'Login' }).getByPlaceholder('Email Address').fill(username);
+    await page.getByRole('textbox', { name: 'Password' }).fill(password);
+    await page.getByRole('button', { name: 'Login' }).click();
+    await expect(page.getByText('Logged in as ' + 'vukean')).toBeVisible();
+    await page.getByRole('link', { name: ' Cart' }).click();
+    await page.getByText('Proceed To Checkout').click();
 
 
 })
