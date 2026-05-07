@@ -263,3 +263,45 @@ test('Test case 10: Verify Subscription in home page',async({page})=>{
     await page.getByRole('textbox', { name: 'Your email address' }).fill('anvuke2001@gmail.com');
     await page.locator('#subscribe').click();
 })
+test('Test case 11: Verify Subscription in home page',async({page})=>{
+    const footer = page.locator('footer');
+
+    await page.goto('https://automationexercise.com/');
+    await page.getByRole('link', { name: ' Cart' }).click();
+    await footer.scrollIntoViewIfNeeded();
+    await expect(footer).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Subscription' })).toBeVisible();
+    await page.getByRole('textbox', { name: 'Your email address' }).fill('anvuke2001@gmail.com');
+    await page.locator('#subscribe').click();
+})
+test('Test case 12: add product to cart and verify in cart page',async({page})=>{
+    //const first product
+    const firstProduct = page.locator('.product-image-wrapper').first();
+    const secondProduct = page.locator('.product-image-wrapper').nth(1);
+    await page.goto('https://automationexercise.com/');
+    await page.getByRole('link', { name: ' Products' }).click();
+    //Ham hover vao san pham dau tien va click vao add to cart
+    await firstProduct.hover();
+    //khoi' overlay-content a lay the A la nut click
+    await firstProduct.locator('.overlay-content a').click();
+    await page.getByRole('button', { name: 'Continue Shopping' }).click();
+    //hover vao san pham thu 2 va click vao add to cart
+    await secondProduct.hover();
+    await secondProduct.locator('.overlay-content a').click();
+    await page.getByRole('button', { name: 'Continue Shopping' }).click();
+    //click vao cart va verify san pham da duoc them vao cart
+    await page.getByRole('link', { name: ' Cart' }).click();
+    //Khai bao ten san pham de verify, o day minh se lay ten san pham tu trang product va so sanh voi ten san pham trong cart
+    const productNames = page.locator('.cart_info_table .cart_description a');
+    const firstProductName = (await productNames.nth(0).textContent())?.trim();
+    const secondProductName = (await productNames.nth(1).textContent())?.trim();
+    const firstProductInCart = page.locator('#product-1 .cart_description a');
+    const secondProductInCart = page.locator('#product-2 .cart_description a');
+
+    await expect(firstProductInCart).toHaveText(firstProductName ?? '');
+    await expect(secondProductInCart).toHaveText(secondProductName ?? '');
+
+
+
+
+})
