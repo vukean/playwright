@@ -329,6 +329,4 @@ test('Test case 14: Place Order: Register while Checkout',async({page})=>{
     await expect(page.getByText('Logged in as ' + 'vukean')).toBeVisible();
     await page.getByRole('link', { name: ' Cart' }).click();
     await page.getByText('Proceed To Checkout').click();
-
-
 })
