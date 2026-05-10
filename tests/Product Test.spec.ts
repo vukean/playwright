@@ -330,3 +330,8 @@ test('Test case 14: Place Order: Register while Checkout',async({page})=>{
     await page.getByRole('link', { name: ' Cart' }).click();
     await page.getByText('Proceed To Checkout').click();
 })
+test('Test case 15: Place Order: Register Before Checkout',async({page})=>{
+        await page.goto('https://automationexercise.com/');
+        await page.getByRole('link', { name: ' Signup / Login' }).click();
+
+})
