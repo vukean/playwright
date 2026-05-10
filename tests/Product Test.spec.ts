@@ -330,8 +330,34 @@ test('Test case 14: Place Order: Register while Checkout',async({page})=>{
     await page.getByRole('link', { name: ' Cart' }).click();
     await page.getByText('Proceed To Checkout').click();
 })
-test('Test case 15: Place Order: Register Before Checkout',async({page})=>{
-        await page.goto('https://automationexercise.com/');
-        await page.getByRole('link', { name: ' Signup / Login' }).click();
+// test('Test case 15: Place Order: Register Before Checkout',async({page})=>{
+//         await page.goto('https://automationexercise.com/');
+//         await page.getByRole('link', { name: ' Signup / Login' }).click();
+
+// })
+
+test('test case 17: remove product from cart page',async({page})=>{
+    await page.goto('https://automationexercise.com/');
+        const firstProduct = page.locator('.product-image-wrapper').first();
+        await page.getByRole('link', { name: ' Products' }).click();
+        await page.getByText('Add to cart').nth(1).click();
+        await page.getByRole('button', { name: 'Continue Shopping' }).click();
+        await page.getByRole('link', { name: ' Cart' }).click();
+        await page.locator('.cart_quantity_delete').first().click();
+        await expect(page.locator('#product-1')).not.toBeVisible();
 
 })
+test('Test Case 18: View Category Products',async({page})=>{
+        await page.goto('https://automationexercise.com/'); 
+        //Khai báo left side bar để verify
+        const leftSideBar = page.locator('.left-sidebar');
+        await expect(leftSideBar).toBeVisible();
+        await expect(leftSideBar.getByText('Category')).toBeVisible();
+        await expect(leftSideBar.getByText('Women')).toBeVisible();
+        //khai báo thêm exact = true cho Men và Kids vì trong left side bar có 2 element có text KOOKIE KIDS và 
+        await expect(leftSideBar.getByText('Men', { exact: true })).toBeVisible();
+        await expect(leftSideBar.getByText('Kids', { exact: true })).toBeVisible();
+        await page.getByRole('link', { name: ' Women' }).click();
+        await page.getByRole('link', { name: 'Dress' }).click();
+        
+    })
