@@ -359,5 +359,34 @@ test('Test Case 18: View Category Products',async({page})=>{
         await expect(leftSideBar.getByText('Kids', { exact: true })).toBeVisible();
         await page.getByRole('link', { name: ' Women' }).click();
         await page.getByRole('link', { name: 'Dress' }).click();
-        
+        await expect(page.getByRole('heading', { name: 'Women - Dress Products' })).toContainText('Women - Dress Products', { exact: true });
+
     })
+    test('Test Case 19: View & Cart Brand Products',async({page})=>{
+        await page.goto('https://automationexercise.com/');
+        const leftSideBar = page.locator('.left-sidebar');
+        await expect(leftSideBar).toBeVisible();
+        await expect(leftSideBar.getByText('Brands')).toBeVisible();
+        await expect(leftSideBar.getByText('Polo')).toBeVisible();
+        await expect(leftSideBar.getByText('H&M')).toBeVisible();
+        await expect(leftSideBar.getByText('Madame')).toBeVisible();
+        await expect(leftSideBar.getByText('Mast & Harbour')).toBeVisible();
+        await expect(leftSideBar.getByText('Babyhug')).toBeVisible();
+        await expect(leftSideBar.getByText('Allen Solly Junior')).toBeVisible();
+        await expect(leftSideBar.getByText('KOOKIE KIDS')).toBeVisible();
+                await expect(leftSideBar.getByText('BIBA')).toBeVisible();
+
+        await page.getByRole('link', { name: 'Polo' }).click();
+        await expect(page.getByRole('heading', { name: 'Brand - Polo Products' })).toContainText('Brand - Polo Products', { exact: true });
+        // khai bao products de verify so luong san pham thuoc brand polo, o day minh se verify neu so luong san pham thuoc brand polo > 0 thi moi hien thi san pham, neu = 0 thi hien thi text No products available
+        const products = page.locator('.product-image-wrapper');
+        const count = await products.count();
+
+        expect(count).toBeGreaterThan(0);
+
+        for (let i = 0; i < count; i++) {
+        await expect(products.nth(i)).toBeVisible();
+}        //click vao san pham dau tien va add to cart
+
+    })
+    
